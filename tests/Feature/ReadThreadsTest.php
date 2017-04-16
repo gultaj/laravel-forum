@@ -17,7 +17,7 @@ class ReadThreadsTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
     public function testAUserCanViewAllThreads()
     {
@@ -33,7 +33,7 @@ class ReadThreadsTest extends TestCase
 
     public function testAUserCanViewRepliesForAThread()
     {
-        $reply = factory(Reply::class)->create([
+        $reply = create(Reply::class, [
             'thread_id' => $this->thread->id
         ]);
 

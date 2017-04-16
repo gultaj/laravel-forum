@@ -14,26 +14,26 @@ class ParticipateInForumTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testAnUnauthenticateUserMayNotAddReply()
-    {
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->make();
-
-        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
-        $this->assertInstanceOf('Illuminate\Auth\AuthenticationException', $response->exception);
-    }
-
     public function testAnAuthenticatedUserMayParticipateInForumThreads()
     {
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->make();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class);
 
-        $this->actingAs($user = factory(User::class)->create())
-            ->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+        $this->signIn()
+            ->post(route('replies.store', $thread), $reply->toArray());
             
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
 
         $this->get(route('threads.show', $thread))
             ->assertSee($reply->body);
+    }
+
+    public function testAnUnauthenticateUserMayNotAddReply()
+    {
+        $thread = create(Thread::class);
+
+        $this->expectUnauthenticated();
+
+        $response = $this->post(route('replies.store', $thread), []);
     }
 }

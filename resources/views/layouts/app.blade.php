@@ -43,7 +43,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ route('threads') }}">All threads</a></li>
+                        <li><a href="{{ route('threads.index') }}">All threads</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

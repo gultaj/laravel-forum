@@ -15,14 +15,14 @@ class ThreadTest extends TestCase
 
     public function testAThreadHasReplies()
     {
-        $thread = factory(Thread::class)->create();
+        $thread = create(Thread::class);
 
         $this->assertInstanceOf(Collection::class, $thread->replies);
     }
 
     public function testAThreadHasOwner()
     {
-        $thread = factory(Thread::class)->create();
+        $thread = create(Thread::class);
 
         $this->assertInstanceOf(User::class, $thread->owner);
     }
