@@ -17,12 +17,8 @@ class ParticipateInForumTest extends TestCase
 
     public function testAnAuthenticatedUserMayParticipateInForumThreads()
     {
-        $channel = create(Channel::class);
-        $thread = create(Thread::class, [
-            'user_id' => create(User::class)->id,
-            'channel_id' => $channel->id,
-        ]);
-        $reply = make(Reply::class);
+        $thread = create_testing(Thread::class);
+        $reply = make_testing(Reply::class);
 
         $this->signIn()
             ->post(route('replies.store', $thread), $reply->toArray());
@@ -30,7 +26,7 @@ class ParticipateInForumTest extends TestCase
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
 
 
-        $this->get(route('threads.show', [$channel, $thread]))
+        $this->get(route('threads.show', [$thread->channel, $thread]))
             ->assertSee($reply->body);
     }
 

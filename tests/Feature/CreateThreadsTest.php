@@ -16,9 +16,7 @@ class CreateThreadsTest extends TestCase
 
     public function testAnAuthenticatedUserCanCreateNewThreads()
     {
-        $thread = make(Thread::class);
-        $channel = create(Channel::class);
-        $thread->channel_id = $channel->id;
+        $thread = make_testing(Thread::class);
 
         $this->signIn()
             ->post('/threads', $thread->toArray());
@@ -28,11 +26,10 @@ class CreateThreadsTest extends TestCase
             'body' => $thread->body
         ]);
 
-        $thread = Thread::where('title', $thread->title)->first();
-
         $this->get('/threads')
             ->assertSee($thread->title);
-//        dd(route('threads.show', [$thread->channel, $thread]));
+
+        $thread = Thread::where('title', $thread->title)->first();
         $this->get(route('threads.show', [$thread->channel, $thread]))
             ->assertSee($thread->title)
             ->assertSee($thread->body);

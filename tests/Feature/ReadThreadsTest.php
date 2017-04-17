@@ -19,10 +19,7 @@ class ReadThreadsTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = create(Thread::class, [
-            'channel_id' => create(Channel::class)->id,
-            'user_id' => create(User::class),
-        ]);
+        $this->thread = create_testing(Thread::class);
     }
     public function testAUserCanViewAllThreads()
     {
@@ -38,9 +35,8 @@ class ReadThreadsTest extends TestCase
 
     public function testAUserCanViewRepliesForAThread()
     {
-        $reply = create(Reply::class, [
-            'thread_id' => $this->thread->id,
-            'user_id' => create(User::class)->id
+        $reply = create_testing(Reply::class, [
+            'thread_id' => $this->thread->id
         ]);
 
         $this->get(route('threads.show', [$this->thread->channel, $this->thread]))

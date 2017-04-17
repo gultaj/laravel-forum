@@ -33,3 +33,30 @@ $factory->define(App\Reply::class, function(Faker\Generator $faker) {
         'body' => $faker->paragraph
     ];
 });
+
+// Testing
+
+$factory->state(App\Thread::class, 'testing', function(Faker\Generator $faker) {
+    return [
+        'user_id' => function() {
+            return factory(App\User::class)->create()->id;
+        },
+        'channel_id' => function() {
+            return factory(App\Channel::class)->create()->id;
+        },
+        'title' => $faker->sentence,
+        'body' => $faker->paragraph
+    ];
+});
+
+$factory->state(App\Reply::class, 'testing', function(Faker\Generator $faker) {
+    return [
+        'user_id' => function() {
+            return factory(App\User::class)->create()->id;
+        },
+        'thread_id' => function() {
+            return factory(App\Thread::class)->create()->id;
+        },
+        'body' => $faker->paragraph
+    ];
+});
