@@ -18,8 +18,9 @@ class CreateThreadsTest extends TestCase
     {
         $thread = make_testing(Thread::class);
 
-        $this->signIn()
-            ->post('/threads', $thread->toArray());
+        $this->signIn();
+        
+        $response = $this->post('/threads', $thread->toArray());
         
         $this->assertDatabaseHas('threads', [
             'title' => $thread->title,
@@ -29,10 +30,27 @@ class CreateThreadsTest extends TestCase
         $this->get('/threads')
             ->assertSee($thread->title);
 
-        $thread = Thread::where('title', $thread->title)->first();
-        $this->get(route('threads.show', [$thread->channel, $thread]))
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
+    }
+
+    public function testAThreadRequiresATitle()
+    {
+        $this->_publishThread(['title' => ''])
+            ->assertSessionHasErrors('title');
+    }
+
+    public function testAThreadRequiresABody()
+    {
+        $this->_publishThread(['body' => ''])
+            ->assertSessionHasErrors('body');
+    }
+
+    public function testAThreadRequiresAValidChannel()
+    {
+        $this->_publishThread(['channel_id' => 2])
+            ->assertSessionHasErrors('channel_id');
     }
 
     public function testAnUnauthenticateUserCannotCreateThreads()
@@ -42,6 +60,13 @@ class CreateThreadsTest extends TestCase
         $this->get('/threads/create')->assertRedirect('/login');
 
         $this->post('/threads')->assertRedirect('/login');
+    }
+
+    private function _publishThread($overrides = [])
+    {
+        $thread = make_testing(Thread::class, $overrides);
+        $this->withExceptionHandling()->signIn();
+        return $this->post('/threads', $thread->toArray());
     }
 
 }

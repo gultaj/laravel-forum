@@ -36,4 +36,18 @@ class ParticipateInForumTest extends TestCase
             ->post(route('replies.store', create(Thread::class)))
             ->assertRedirect('/login');
     }
+
+    public function testAReplyRequiresABody()
+    {
+        $this->_publishReply(['body' => ''])
+        ->assertSessionHasErrors('body');
+    }
+
+    private function _publishReply($overrides = [])
+    {
+        $thread = create_testing(Thread::class);
+        $reply = make_testing(Reply::class, $overrides);
+        $this->withExceptionHandling()->signIn();
+        return $this->post(route('replies.store', $thread), $reply->toArray());
+    }
 }

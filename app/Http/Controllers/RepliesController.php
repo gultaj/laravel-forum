@@ -15,6 +15,9 @@ class RepliesController extends Controller
 
     public function store(Request $request, Thread $thread)
     {
+        $this->validate($request, [
+            'body' => 'required'
+        ]);
         $thread->replies()->create([
             'body' => $request->body,
             'user_id' => $request->user()->id
