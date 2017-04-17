@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Channel;
 use App\User;
 use App\Thread;
 use App\Reply;
@@ -16,7 +17,11 @@ class ParticipateInForumTest extends TestCase
 
     public function testAnAuthenticatedUserMayParticipateInForumThreads()
     {
-        $thread = create(Thread::class);
+        $channel = create(Channel::class);
+        $thread = create(Thread::class, [
+            'user_id' => create(User::class)->id,
+            'channel_id' => $channel->id,
+        ]);
         $reply = make(Reply::class);
 
         $this->signIn()
@@ -24,16 +29,15 @@ class ParticipateInForumTest extends TestCase
             
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
 
-        $this->get(route('threads.show', $thread))
+
+        $this->get(route('threads.show', [$channel, $thread]))
             ->assertSee($reply->body);
     }
 
-    public function testAnUnauthenticateUserMayNotAddReply()
+    public function testAnUnauthenticatedUserMayNotAddReply()
     {
-        $thread = create(Thread::class);
-
-        $this->expectUnauthenticated();
-
-        $response = $this->post(route('replies.store', $thread), []);
+        $this->withExceptionHandling()
+            ->post(route('replies.store', create(Thread::class)))
+            ->assertRedirect('/login');
     }
 }

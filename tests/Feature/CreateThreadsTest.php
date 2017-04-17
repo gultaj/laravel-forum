@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Channel;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
@@ -16,6 +17,8 @@ class CreateThreadsTest extends TestCase
     public function testAnAuthenticatedUserCanCreateNewThreads()
     {
         $thread = make(Thread::class);
+        $channel = create(Channel::class);
+        $thread->channel_id = $channel->id;
 
         $this->signIn()
             ->post('/threads', $thread->toArray());
@@ -25,24 +28,23 @@ class CreateThreadsTest extends TestCase
             'body' => $thread->body
         ]);
 
+        $thread = Thread::where('title', $thread->title)->first();
+
         $this->get('/threads')
             ->assertSee($thread->title);
-
-        $this->get(route('threads.show', $thread))
+//        dd(route('threads.show', [$thread->channel, $thread]));
+        $this->get(route('threads.show', [$thread->channel, $thread]))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
 
     public function testAnUnauthenticateUserCannotCreateThreads()
     {
-        $this->expectUnauthenticated();
+        $this->withExceptionHandling();
 
-        $response = $this->post('/threads', []);
+        $this->get('/threads/create')->assertRedirect('/login');
+
+        $this->post('/threads')->assertRedirect('/login');
     }
 
-    public function testGuestCannotSeeTheCreateThreadPage()
-    {
-        $this->withExceptionHandling()->get('/threads/create')
-            ->assertRedirect('/login');
-    }
 }

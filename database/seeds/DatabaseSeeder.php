@@ -12,12 +12,19 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
-        $threads = factory(\App\Thread::class, 20)->create();
+        $channels = factory(\App\Channel::class, 5)->create();
+        $threads = factory(\App\Thread::class, 10)->create();
+        $users = factory(\App\User::class, 20)->create();
 
-        $threads->each(function($thread) {
-            factory(App\Reply::class, 10)->create([
-                'thread_id' => $thread->id
-            ]);
+        $threads->each(function($thread) use ($users, $channels) {
+            $thread->replies()->saveMany($replies = factory(App\Reply::class, 5)->create());
+            $replies->each(function($reply) use ($users) {
+                $reply->owner()->associate($users->random());
+                $reply->save();
+            });
+            $thread->owner()->associate($users->random());
+            $thread->channel()->associate($channels->random());
+            $thread->save();
         });
     }
 }
