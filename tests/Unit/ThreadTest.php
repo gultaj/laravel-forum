@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Reply;
 use App\Thread;
 use App\User;
 use App\Channel;
@@ -16,25 +17,26 @@ class ThreadTest extends TestCase
 
     public function testAThreadHasReplies()
     {
-        $thread = create(Thread::class);
+        $thread = create_testing(Thread::class);
+        $thread->replies()->saveMany([
+            $reply = create_testing(Reply::class),
+            create_testing(Reply::class)
+        ]);
 
         $this->assertInstanceOf(Collection::class, $thread->replies);
+        $this->assertTrue($thread->replies->contains($reply));
     }
 
     public function testAThreadHasOwner()
     {
-        $thread = create(Thread::class, [
-            'user_id' => create(User::class)->id
-        ]);
+        $thread = create_testing(Thread::class);
 
         $this->assertInstanceOf(User::class, $thread->owner);
     }
 
     public function testAThreadBelongToChannel()
     {
-        $thread = create(Thread::class, [
-            'channel_id' => create(Channel::class)->id
-        ]);
+        $thread = create_testing(Thread::class);
 
         $this->assertInstanceOf(Channel::class, $thread->channel);
     }

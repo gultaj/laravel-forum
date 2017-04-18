@@ -40,7 +40,7 @@ class ParticipateInForumTest extends TestCase
     public function testAReplyRequiresABody()
     {
         $this->_publishReply(['body' => ''])
-        ->assertSessionHasErrors('body');
+            ->assertSessionHasErrors('body');
     }
 
     private function _publishReply($overrides = [])

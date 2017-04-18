@@ -43,4 +43,14 @@ class ReadThreadsTest extends TestCase
             ->assertSee($reply->body);
 
     }
+
+    public function testAUserCanFilterThreadsByTag()
+    {
+        $thread1 = create_testing(Thread::class);
+        $thread2 = create_testing(Thread::class);
+
+        $this->get(route('threads.index', $thread1->channel))
+            ->assertSee($thread1->title)
+            ->assertDontSee($thread2->title);
+    }
 }
