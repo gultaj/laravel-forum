@@ -47,15 +47,26 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Channels <span class="caret"></span>
                             </a>
-
                             <ul class="dropdown-menu" role="menu">
                                 @foreach($channels as $channel)
                                     <li><a href="{{ route('threads.index', $channel) }}">{{ $channel->name }}</a></li>
                                 @endforeach
                             </ul>
                         </li>
-                        <li><a href="{{ route('threads.index') }}">All threads</a></li>
-                        <li><a href="{{ route('threads.create') }}">New thread</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Browse <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('threads.index') }}">All Threads</a></li>
+                                @if (auth()->check())
+                                    <li><a href="{{ route('threads.index', [null, 'by' => auth()->user()->name]) }}">Mine Threads</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                        @if (auth()->check())
+                            <li><a href="{{ route('threads.create') }}">New thread</a></li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
