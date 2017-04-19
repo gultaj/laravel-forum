@@ -12,7 +12,12 @@
                     <div class="panel-body">
                         @foreach($threads as $thread)
                             <article>
-                                <h4><a href="{{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->title }}</a></h4>
+                                <section class="article-header clearfix">
+                                    <h4 class="pull-left"><a href="{{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->title }}</a></h4>
+                                    <p class="pull-right">{{ $thread->owner->name }}</p>
+                                </section>
+
+
                                 <div class="body">{{ $thread->body }}</div>
                             </article>
                             <hr>

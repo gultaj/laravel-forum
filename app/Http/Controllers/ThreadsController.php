@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Thread;
+use App\User;
 use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
@@ -19,14 +20,21 @@ class ThreadsController extends Controller
      * @param Channel|null $channel
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, Request $request)
     {
 
         if ($channel->exists) {
-            $threads = $channel->threads()->latest()->get();
+            $threads = $channel->threads()->latest();
         } else {
-            $threads = Thread::latest()->get();
+            $threads = Thread::latest();
         }
+
+        if ($request->has('by')) {
+            $user = User::whereName($request->by)->first();
+            $threads = $threads->whereUserId($user->id);
+        }
+
+        $threads = $threads->get();
 
         return view('threads.index', [
             'threads' => $threads,
@@ -56,7 +64,10 @@ class ThreadsController extends Controller
             'title' => 'required',
             'body' => 'required',
             'channel_id' => 'required|exists:channels,id'
+        ],[
+            'channel_id.*' => 'The selected Channel name is invalid.'
         ]);
+
         Thread::create([
             'title' => $request->title,
             'body' => $request->body,

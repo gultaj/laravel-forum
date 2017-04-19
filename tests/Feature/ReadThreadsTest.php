@@ -41,7 +41,6 @@ class ReadThreadsTest extends TestCase
 
         $this->get(route('threads.show', [$this->thread->channel, $this->thread]))
             ->assertSee($reply->body);
-
     }
 
     public function testAUserCanFilterThreadsByTag()
@@ -52,5 +51,14 @@ class ReadThreadsTest extends TestCase
         $this->get(route('threads.index', $thread1->channel))
             ->assertSee($thread1->title)
             ->assertDontSee($thread2->title);
+    }
+
+    public function testAUserCanFilterThreadsByUsername()
+    {
+        $anotherThread = create_testing(Thread::class);
+
+        $this->get(route('threads.index', [null, 'by' => $this->thread->owner->name]))
+            ->assertSee($this->thread->title)
+            ->assertDontSee($anotherThread->title);
     }
 }
