@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#">{{ $thread->owner->name }}</a>
@@ -12,17 +12,11 @@
 
                     <div class="panel-body">{{ $thread->body }}</div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
 
-                @each('replies.show', $thread->replies, 'reply')
+                @each('replies.show', $replies, 'reply')
 
-            </div>
-        </div>
-        <div class="row" style="padding-bottom: 100px">
-            <div class="col-md-8 col-md-offset-2">
+                {{ $replies->links() }}
+
                 @if(auth()->check())
 
                     @include('replies.form')
@@ -30,6 +24,16 @@
                 @else
                     <p>Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
                 @endif
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        This thread was published {{ $thread->created_at->diffForHumans() }}
+                        by <a href="#">{{ $thread->owner->name }}</a>,
+                        and currently has {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
