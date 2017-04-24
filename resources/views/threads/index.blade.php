@@ -12,10 +12,13 @@
                     <div class="panel-body">
                         @foreach($threads as $thread)
                             <article>
-                                <section class="article-header clearfix">
-                                    <h4 class="pull-left"><a href="{{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->title }}</a></h4>
-                                    <p class="pull-right">{{ $thread->owner->name }}</p>
-                                </section>
+                                <div class="level">
+                                    <h4 class="flex">
+                                        <a href="{{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->title }}</a>
+                                    </h4>
+
+                                    <strong>{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>
+                                </div>
 
 
                                 <div class="body">{{ $thread->body }}</div>
