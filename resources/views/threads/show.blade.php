@@ -13,9 +13,19 @@
                     <div class="panel-body">{{ $thread->body }}</div>
                 </div>
 
-                @each('replies.show', $replies, 'reply')
+                <div class="panel panel-default">
+                    <div class="panel-heading">Replies</div>
 
-                {{ $replies->links() }}
+                    <div class="panel-body">
+                        @each('replies.show', $replies, 'reply')
+                        
+                        {{ $replies->links() }}
+                        
+                    </div>
+                </div>
+                
+                
+
 
                 @if(auth()->check())
 
