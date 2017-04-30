@@ -123,8 +123,16 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy(Request $request, Thread $thread)
     {
-        //
+        $this->authorize('delete', $thread);
+        $thread->replies()->delete();
+        $thread->delete();
+
+        if (request()->wantsJson()) {
+            return response(null, 204); 
+        }
+
+        return redirect()->route('threads.index');
     }
 }

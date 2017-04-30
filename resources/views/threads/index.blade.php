@@ -8,7 +8,7 @@
                     <h1>Forum Threads @if($channel->exists) for: {{ $channel->name }} @endif</h1>
                 </div>
                         
-                @foreach($threads as $thread)
+                @forelse($threads as $thread)
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="level">
@@ -22,7 +22,9 @@
 
                         <div class="panel-body">{{ $thread->body }}</div>
                     </div>
-                @endforeach
+                @empty
+                    There are no relevant results at this time.
+                @endforelse
             </div>
         </div>
     </div>
