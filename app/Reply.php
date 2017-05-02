@@ -12,11 +12,16 @@ class Reply extends Model
 
     protected $guarded = [];
 
-    protected $with = ['owner', 'favorites'];
+    protected $with = ['owner', 'favorites', 'thread'];
 
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
     }
 
 }

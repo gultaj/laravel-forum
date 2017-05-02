@@ -21,9 +21,12 @@ class ProfilesTest extends TestCase
 
     public function testViewAllUsersThreadsInProfile()
     {
-        $user = create(User::class);
+        $this->signIn();
+        $user = auth()->user();
+
         $thread = create_testing(Thread::class, ['user_id' => $user->id]);
 
+        $this->assertDatabaseHas('threads', $thread->toArray());
         $this->get("/profiles/{$user->name}")
             ->assertSee($thread->title)
             ->assertSee($thread->body);

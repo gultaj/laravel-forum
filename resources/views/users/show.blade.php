@@ -7,21 +7,16 @@
             <small>Since {{ $user->created_at->diffForHumans() }}</small>
         </div>
 
-        @foreach ($threads as $thread)
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="level">
-                        <span class="flex">
-                            <a href="{{ route('users.show', $thread->owner) }}">{{ $thread->owner->name }}</a>
-                            posted: {{ $thread->title }}
-                        </span>
-                        <span>{{ $thread->created_at->diffForHumans() }}</span>
-                    </div>
-                </div>
+        @forelse ($activities as $date => $activity)
+            <h3 class="page-header">{{ $date }}</h3>
+            @foreach ($activity as $record)
+                
+                @include ("activities.{$record->type}", ['activity' => $record])
 
-                <div class="panel-body">{{ $thread->body }}</div>
-            </div>
-        @endforeach
-        {{ $threads->links() }}
+            @endforeach
+        @empty
+
+        @endforelse
+
     </div>
 @endsection

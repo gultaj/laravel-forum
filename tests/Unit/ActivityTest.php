@@ -41,4 +41,20 @@ class ActivityTest extends TestCase
 
         $this->assertEquals(2, \App\Activity::count());
     }
+
+    public function testItFetchesAFeedForAnyUser()
+    {
+        $this->signIn();
+
+        create_testing(\App\Thread::class, ['user_id' => auth()->id()]);
+        create_testing(\App\Thread::class, [
+            'user_id' => auth()->id(),
+            'created_at' => \Carbon\Carbon::now()->subWeek()
+        ]);
+
+        $feed = \App\Activity::feed(auth()->user());
+
+        $this->assertTrue($feed->keys()->contains(\Carbon\Carbon::now()->format('Y-m-d')));
+
+    }
 }

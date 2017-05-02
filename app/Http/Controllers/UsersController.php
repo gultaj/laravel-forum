@@ -9,9 +9,11 @@ class UsersController extends Controller
 {
     public function show(User $user)
     {
+        $activities = \App\Activity::feed($user);
+
         return view('users.show', [
             'user' => $user,
-            'threads' => $user->threads()->paginate(15)
+            'activities' => $activities
         ]);
     }
 }

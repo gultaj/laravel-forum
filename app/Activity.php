@@ -12,4 +12,15 @@ class Activity extends Model
     {
         return $this->morphTo();
     }
+
+    public static function feed(User $user)
+    {
+        return $user->activity()
+            ->latest()
+            ->with('subject')
+            ->get()
+            ->groupBy(function($activity) {
+                return $activity->created_at->format('Y-m-d');
+            });
+    }
 }
