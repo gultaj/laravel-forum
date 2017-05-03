@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Channel;
+use App\Thread;
+use App\Reply;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
             });
             $view->with('channels', $channels);
         });
+
+        Relation::morphMap([
+            'thread' => Thread::class,
+            'reply' => Reply::class,
+            'favorite' => \App\Favorite::class
+        ]);
     }
 
     /**

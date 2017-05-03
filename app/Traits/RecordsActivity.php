@@ -15,13 +15,17 @@ trait RecordsActivity
                 $model->recordActivity($event);
             });
         }
+
+        static::deleting(function($model) {
+            $model->activity()->delete();
+        });
     }
 
     protected function recordActivity(String $event)
     {
         $this->activity()->create([
             'user_id' => auth()->id(),
-            'type' => $this->getActivityType($event),
+            'type' => $event,
         ]);
     }
 
@@ -30,11 +34,11 @@ trait RecordsActivity
         return ['created'];
     }
 
-    protected function getActivityType($event)
-    {
-        $type = strtolower((new \ReflectionClass($this))->getShortName());
-        return "{$event}_{$type}";
-    }
+    // protected function getActivityType($event)
+    // {
+    //     $type = strtolower((new \ReflectionClass($this))->getShortName());
+    //     return "{$event}_{$type}";
+    // }
 
     public function activity()
     {

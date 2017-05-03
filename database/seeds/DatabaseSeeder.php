@@ -21,10 +21,18 @@ class DatabaseSeeder extends Seeder
             $replies->each(function($reply) use ($users) {
                 $reply->owner()->associate($users->random());
                 $reply->save();
+                $reply->activity()->create([
+                    'user_id' => $reply->owner->id,
+                    'type' => 'created'
+                ]);
             });
             $thread->owner()->associate($users->random());
             $thread->channel()->associate($channels->random());
             $thread->save();
+            $thread->activity()->create([
+                'user_id' => $thread->owner->id,
+                'type' => 'created'
+            ]);
         });
     }
 }

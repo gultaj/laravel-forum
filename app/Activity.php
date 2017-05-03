@@ -13,9 +13,9 @@ class Activity extends Model
         return $this->morphTo();
     }
 
-    public static function feed(User $user)
+    public static function feed(User $user, $times = 50)
     {
-        return $user->activity()
+        return static::whereUserId($user->id)
             ->latest()
             ->with('subject')
             ->get()

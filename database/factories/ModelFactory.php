@@ -34,6 +34,13 @@ $factory->define(App\Reply::class, function(Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Activity::class, function(Faker\Generator $faker) {
+    return [
+        'user_id' => null,
+        'type' => null,
+    ];
+});
+
 // Testing
 
 $factory->state(App\Thread::class, 'testing', function(Faker\Generator $faker) {

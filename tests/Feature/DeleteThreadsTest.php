@@ -11,19 +11,26 @@ class DeleteThreadsTest extends TestCase
 {
     use DatabaseMigrations;
    
-   
     public function testAThreadCanBeDeleted()
     {
-
-        $thread = create_testing(Thread::class);
+        $this->signIn();
+        $thread = create_testing(Thread::class, ['user_id' => auth()->id()]);
         $reply = create_testing(Reply::class, ['thread_id' => $thread->id]);
 
-        $this->signIn($thread->owner()->first())
-            ->json('DELETE', route('threads.destroy', $thread))
+        $this->json('DELETE', route('threads.destroy', $thread))
             ->assertStatus(204);
-            
+   
         $this->assertDatabaseMissing('threads', $thread->toArray());
         $this->assertDatabaseMissing('replies', $reply->toArray());
+        
+        $this->assertDatabaseMissing('activities', [
+            'subject_id' => $thread->id,
+            'subject_type' => 'thread'
+        ]);
+         $this->assertDatabaseMissing('activities', [
+            'subject_id' => $reply->id,
+            'subject_type' => 'reply'
+        ]);
 
         
         $this->get(route('threads.index'))
