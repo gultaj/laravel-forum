@@ -12,6 +12,13 @@
                      <span class="glyphicon glyphicon-heart{{ $reply->isFavorited ? '' : '-empty' }}"></span>
                 </button>
             </form>
+            @can('delete', $reply)
+                <form action="{{ route('replies.destroy', $reply) }}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="submit" class="btn btn-link">Delete reply</button>
+                </form>
+            @endcan
         @endif
     </section>
     <div class="body">{{ $reply->body }}</div>

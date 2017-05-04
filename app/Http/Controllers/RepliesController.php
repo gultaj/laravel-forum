@@ -25,4 +25,20 @@ class RepliesController extends Controller
 
         return back();
     }
+
+    /**
+     * Remove the specified resource from storage
+     * 
+     * @param  \App\Reply $reply
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('delete', $reply);
+
+        $reply->favorites->each->delete();
+        $reply->delete();
+
+        return back()->with('flash', 'Reply deleted');
+    }
 }

@@ -45,7 +45,9 @@ class ReadThreadsTest extends TestCase
 
     public function testAUserCanFilterThreadsByTag()
     {
-        $thread1 = create_testing(Thread::class);
+        $this->signIn();
+
+        $thread1 = create_testing(Thread::class, ['user_id' => \auth()->id()]);
         $thread2 = create_testing(Thread::class);
 
         $this->get(route('threads.index', $thread1->channel))
