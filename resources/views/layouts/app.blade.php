@@ -106,6 +106,8 @@
         </nav>
 
         @yield('content')
+
+        <flash message="asdf"></flash>
     </div>
 
     <!-- Scripts -->
