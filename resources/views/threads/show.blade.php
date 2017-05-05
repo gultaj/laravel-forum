@@ -15,7 +15,7 @@
                             <form action="{{ route('threads.destroy', $thread) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
-                                <button type="submit" class="btn btn-link">Delete</button>
+                                <button type="submit" class="btn btn-link">Delete thread</button>
                             </form>
                         @endcan
                     </div>
