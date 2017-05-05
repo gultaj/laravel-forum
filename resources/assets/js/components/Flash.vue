@@ -14,13 +14,16 @@
             }
         },
         created() {
-            this.flash(this.message);
+            if (this.message) {
+                this.flash(this.message);
+            }
             window.events.$on('flash', message => this.flash(message)); 
         },
         methods: {
             flash (message) {
                 this.body = message;
-                this.show = Boolean(this.body);
+                this.show = true;
+
                 this.hide();
             },
             hide () {

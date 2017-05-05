@@ -107,7 +107,7 @@
 
         @yield('content')
 
-        <flash message="asdf"></flash>
+        <flash message=" {{ session('flash') }}"></flash>
     </div>
 
     <!-- Scripts -->

@@ -23,7 +23,7 @@ class RepliesController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-        return back();
+        return back()->with('flash', 'Reply created');
     }
 
     /**

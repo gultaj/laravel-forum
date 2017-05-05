@@ -12111,7 +12111,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
-        this.flash(this.message);
+        if (this.message) {
+            this.flash(this.message);
+        }
         window.events.$on('flash', function (message) {
             return _this.flash(message);
         });
@@ -12120,7 +12122,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         flash: function flash(message) {
             this.body = message;
-            this.show = Boolean(this.body);
+            this.show = true;
+
             this.hide();
         },
         hide: function hide() {
@@ -12174,7 +12177,7 @@ window.axios.defaults.headers.common = {
 window.events = new Vue();
 
 window.flash = function (message) {
-  return window.events.$emit('flash', message);
+  window.events.$emit('flash', message);
 };
 
 /**
