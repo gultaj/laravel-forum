@@ -127,7 +127,7 @@ class ThreadsController extends Controller
      */
     public function destroy(Request $request, Thread $thread)
     {
-        $this->authorize('delete', $thread);
+        $this->authorize('change', $thread);
         $thread->replies->each->delete();
         $thread->delete();
 

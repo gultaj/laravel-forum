@@ -34,11 +34,21 @@ class RepliesController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        $this->authorize('delete', $reply);
+        $this->authorize('change', $reply);
 
         $reply->favorites->each->delete();
         $reply->delete();
 
+        if (\request()->ajax()) {
+            return \response(['status' => 'Reply deleted']);
+        }
+
         return back()->with('flash', 'Reply deleted');
+    }
+
+    public function update(Reply $reply)
+    {
+        $this->authorize('change', $reply);
+        $reply->update(request(['body']));
     }
 }

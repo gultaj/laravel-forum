@@ -46,13 +46,13 @@ class ThreadPolicy
     }
 
     /**
-     * Determine whether the user can delete the thread.
+     * Determine whether the user can change the thread.
      *
      * @param  \App\User  $user
      * @param  \App\Thread  $thread
      * @return mixed
      */
-    public function delete(User $user, Thread $thread)
+    public function change(User $user, Thread $thread)
     {
         return $thread->user_id == $user->id;
     }

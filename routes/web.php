@@ -13,6 +13,7 @@ Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads.inde
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store');
+Route::patch('/replies/{reply}', 'RepliesController@update')->name('replies.update');
 Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorites');
 

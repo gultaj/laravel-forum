@@ -14,3 +14,7 @@ body {
 .btn-favorite {
     padding: 5px 16px 5px 0;
 }
+
+[v-cloak] {
+    display: none;
+}

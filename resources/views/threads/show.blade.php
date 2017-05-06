@@ -11,7 +11,7 @@
                             <a href="{{ route('users.show', $thread->owner) }}">{{ $thread->owner->name }}</a>
                             posted: {{ $thread->title }}
                         </span>
-                        @can ('delete', $thread)
+                        @can ('change', $thread)
                             <form action="{{ route('threads.destroy', $thread) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}

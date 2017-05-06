@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Thread;
 
 use App\Thread;
 use App\Reply;

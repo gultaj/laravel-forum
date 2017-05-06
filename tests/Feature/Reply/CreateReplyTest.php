@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Reply;
 
 use App\Channel;
 use App\User;

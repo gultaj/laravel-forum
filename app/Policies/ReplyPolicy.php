@@ -46,13 +46,13 @@ class ReplyPolicy
     }
 
     /**
-     * Determine whether the user can delete the reply.
+     * Determine whether the user can change the reply.
      *
      * @param  \App\User  $user
      * @param  \App\Reply  $reply
      * @return mixed
      */
-    public function delete(User $user, Reply $reply)
+    public function change(User $user, Reply $reply)
     {
         return $reply->user_id == $user->id;
     }
