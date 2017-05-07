@@ -6,13 +6,8 @@
                 said {{ $reply->created_at->diffForHumans() }}
             </h5>
             @if (auth()->check())
-                <form action="{{ route('replies.favorites', $reply) }}" method="post">
-                    {{ csrf_field() }}
-                    {{ $reply->favorites_count }}
-                    <button type="submit" class="btn btn-link btn-lg btn-favorite" {{ $reply->isFavorited ? 'disabled' : '' }}>
-                        <span class="glyphicon glyphicon-heart{{ $reply->isFavorited ? '' : '-empty' }}"></span>
-                    </button>
-                </form>
+                <favorite :reply="{{ $reply }}"></favorite>
+
                 @can('change', $reply)
                     <div class="btn-group btn-group-sm">
                         <button class="btn btn-warning" type="button" @click="editing = true">

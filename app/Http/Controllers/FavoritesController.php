@@ -17,8 +17,24 @@ class FavoritesController extends Controller
     {
         if (!$reply->favorites()->whereUserId(auth()->id())->exists()) {
             $reply->favorites()->create(['user_id' => auth()->id()]);
+            if (\request()->ajax()) {
+                return \response(['status' => 'Reply has been favorite']);
+            }
+        }
+        if (\request()->ajax()) {
+            return \response(['status' => 'Not favorited']);
         }
 
         return back();
+    }
+
+    public function destroy(Reply $reply)
+    {
+        $reply->favorites()->whereUserId(auth()->id())->delete();
+        if (\request()->ajax()) {
+            return \response(['status' => 'Reply has been unfavorite']);
+        }
+
+        // return back();
     }
 }

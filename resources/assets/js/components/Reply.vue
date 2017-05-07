@@ -1,6 +1,9 @@
 <script>
+    import Favorite from './Favorite.vue';
+
     export default {
         props: ['message', 'id'],
+        components: { Favorite },
         data () {
             return {
                 editing: false,
