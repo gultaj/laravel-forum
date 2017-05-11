@@ -30,7 +30,11 @@ class FavoritesController extends Controller
 
     public function destroy(Reply $reply)
     {
-        $reply->favorites()->whereUserId(auth()->id())->delete();
+        $reply->favorites()
+            ->whereUserId(auth()->id())
+            ->get()
+            ->each
+            ->delete();
         if (\request()->ajax()) {
             return \response(['status' => 'Reply has been unfavorite']);
         }
