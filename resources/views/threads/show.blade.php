@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<thread-view inline-template>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -28,9 +29,11 @@
                     <div class="panel-heading">Replies</div>
 
                     <div class="panel-body">
-                        @each('replies.show', $replies, 'reply')
+                        {{-- @php dd($replies) @endphp --}}
+                        <replies :data="{{ $thread->replies }}"></replies>
+                        {{-- @each('replies.show', $replies, 'reply') --}}
                         
-                        {{ $replies->links() }}
+                        {{-- {{ $replies->links() }} --}}
                         
                     </div>
                 </div>
@@ -55,4 +58,5 @@
             </div>
         </div>
     </div>
+</thread-view>
 @endsection
