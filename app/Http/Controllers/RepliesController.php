@@ -18,10 +18,14 @@ class RepliesController extends Controller
         $this->validate($request, [
             'body' => 'required'
         ]);
-        $thread->replies()->create([
+        $reply = $thread->replies()->create([
             'body' => $request->body,
             'user_id' => $request->user()->id
         ]);
+
+        if (\request()->ajax()) {
+            return $reply->fresh();
+        }
 
         return back()->with('flash', 'Reply created');
     }

@@ -29,22 +29,13 @@
                     <div class="panel-heading">Replies</div>
 
                     <div class="panel-body">
-                        {{-- @php dd($replies) @endphp --}}
-                        <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
-                        {{-- @each('replies.show', $replies, 'reply') --}}
-                        
-                        {{-- {{ $replies->links() }} --}}
-                        
+                        <replies :data="{{ $replies }}" 
+                            :thread-id="{{ $thread->id }}"
+                            @removed="repliesCount--" 
+                            @added="repliesCount++">
+                        </replies>              
                     </div>
                 </div>
-
-                @if(auth()->check())
-
-                    @include('replies.form')
-
-                @else
-                    <p>Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
-                @endif
             </div>
 
             <div class="col-md-4">

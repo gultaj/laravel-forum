@@ -92,7 +92,7 @@ class ThreadsController extends Controller
         return view('threads.show', [
             'thread' => $thread,
             'channel' => $channel,
-            'replies' => $thread->replies()->paginate(25),
+            'replies' => $thread->replies,
         ]);
     }
 

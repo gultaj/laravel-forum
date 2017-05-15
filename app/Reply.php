@@ -14,7 +14,7 @@ class Reply extends Model
 
     protected $appends = ['favoritesCount', 'isFavorited', 'canChange'];
 
-    protected $with = ['owner', 'favorites', 'thread'];
+    protected $with = ['owner', 'favorites'];
 
     public function owner()
     {
@@ -28,7 +28,7 @@ class Reply extends Model
 
     public function getCanChangeAttribute()
     {
-        return auth()->user()->can('change', $this);
+        return auth()->user() and auth()->user()->can('change', $this);
     }
 
 }
