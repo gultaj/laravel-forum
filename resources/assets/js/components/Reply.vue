@@ -2,23 +2,20 @@
     <article v-show="show">
         <section class="level">
             <h5 class="flex">
-                <a :href="'/replies/' + data.owner.name">{{ data.owner.name }}</a> 
-                said {{ data.created_at }}
+                <a :href="'/profiles/' + data.owner.name">{{ data.owner.name }}</a> 
+                said {{ createdAt }}
             </h5>
-            <!--@if (auth()->check())
-                <favorite :reply="{{ $reply }}"></favorite>
 
-                @can('change', $reply)
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-warning" type="button" @click="editing = true">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger" @click="destroy">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                @endcan
-            @endif-->
+            <favorite :reply="data" v-if="signedIn"></favorite>
+
+            <div class="btn-group btn-group-sm" v-if="data.canChange">
+                <button class="btn btn-warning" type="button" @click="editing = true">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-danger" @click="destroy">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </div>
         </section>
         <div v-if="editing">
             <div class="form-group">
@@ -30,13 +27,14 @@
             </div>
         </div>
         <div v-else>
-            <div class="body" v-text="body"></div>
+            <div class="body">{{ body }}</div>
         </div>
         <hr>
     </article>
 </template>
 
 <script>
+    import * as moment from 'moment';
     import Favorite from './Favorite.vue';
 
     export default {
@@ -50,6 +48,14 @@
                 show: true
             };
         },
+        computed: {
+            createdAt() {
+                return moment(this.data.created_at).fromNow();
+            },
+            signedIn() {
+                return window.App.signedIn;
+            }
+        },
         methods: {
             update() {
                 axios.patch('/replies/' + this.id, {body: this.body});
@@ -58,8 +64,9 @@
             },
             destroy() {
                 axios.delete('/replies/' + this.id);
-                this.show = false;
-                flash('Reply has been deleted');
+                this.$emit('deleted', this.id);
+                // this.show = false;
+                
             }
         }
     }

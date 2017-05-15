@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<thread-view inline-template>
+<thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -30,7 +30,7 @@
 
                     <div class="panel-body">
                         {{-- @php dd($replies) @endphp --}}
-                        <replies :data="{{ $thread->replies }}"></replies>
+                        <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
                         {{-- @each('replies.show', $replies, 'reply') --}}
                         
                         {{-- {{ $replies->links() }} --}}
@@ -52,7 +52,7 @@
                     <div class="panel-body">
                         This thread was published {{ $thread->created_at->diffForHumans() }}
                         by <a href="#">{{ $thread->owner->name }}</a>,
-                        and currently has {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}
+                        and currently has <span v-text="pluralCount"></span>
                     </div>
                 </div>
             </div>

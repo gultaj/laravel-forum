@@ -12,7 +12,7 @@ class Reply extends Model
 
     protected $guarded = []; 
 
-    protected $appends = ['favoritesCount', 'isFavorited'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'canChange'];
 
     protected $with = ['owner', 'favorites', 'thread'];
 
@@ -24,6 +24,11 @@ class Reply extends Model
     public function thread()
     {
         return $this->belongsTo(Thread::class);
+    }
+
+    public function getCanChangeAttribute()
+    {
+        return auth()->user()->can('change', $this);
     }
 
 }
