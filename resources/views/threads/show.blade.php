@@ -29,8 +29,7 @@
                     <div class="panel-heading">Replies</div>
 
                     <div class="panel-body">
-                        <replies :data="{{ $replies }}" 
-                            :thread-id="{{ $thread->id }}"
+                        <replies :thread-id="{{ $thread->id }}"
                             @removed="repliesCount--" 
                             @added="repliesCount++">
                         </replies>              

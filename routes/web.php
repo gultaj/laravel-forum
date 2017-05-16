@@ -8,13 +8,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('/threads', 'ThreadsController', ['except' => ['show', 'index']]);
-Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads.index');
-Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
-
+Route::get('/threads/{thread}/replies', 'RepliesController@index')->name('replies.index');
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store');
 Route::patch('/replies/{reply}', 'RepliesController@update')->name('replies.update');
 Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
+
+Route::resource('/threads', 'ThreadsController', ['except' => ['show', 'index']]);
+Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads.index');
+Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorites');
 Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('replies.unfavorites');

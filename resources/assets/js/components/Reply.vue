@@ -1,5 +1,5 @@
 <template>
-    <article v-show="show">
+    <article>
         <section class="level">
             <h5 class="flex">
                 <a :href="'/profiles/' + data.owner.name">{{ data.owner.name }}</a> 
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import * as moment from 'moment';
+    import moment from 'moment';
     import Favorite from './Favorite.vue';
 
     export default {
@@ -44,8 +44,7 @@
             return {
                 editing: false,
                 body: this.data.body,
-                id: this.data.id,
-                show: true
+                id: this.data.id
             };
         },
         computed: {
@@ -64,9 +63,7 @@
             },
             destroy() {
                 axios.delete('/replies/' + this.id);
-                this.$emit('deleted', this.id);
-                // this.show = false;
-                
+                this.$emit('deleted', this.id);              
             }
         }
     }
