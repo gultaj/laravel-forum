@@ -33,16 +33,6 @@ class ReadThreadsTest extends TestCase
             ->assertSee($this->thread->title);
     }
 
-    public function testAUserCanViewRepliesForAThread()
-    {
-        $reply = create_testing(Reply::class, [
-            'thread_id' => $this->thread->id
-        ]);
-
-        $this->get(route('threads.show', [$this->thread->channel, $this->thread]))
-            ->assertSee($reply->body);
-    }
-
     public function testAUserCanFilterThreadsByTag()
     {
         $this->signIn();
@@ -78,5 +68,15 @@ class ReadThreadsTest extends TestCase
         $response = $this->getJson('/threads?popular=1')->json();
 
         $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+    }
+
+    public function testAUserCanFilterThreadsByUnanswered()
+    {
+        $thread = \create_testing(Thread::class);
+        \create_testing(\App\Reply::class, ['thread_id' => $thread->id]);
+
+        $response = $this->getJson(route('threads.index', [null, 'unanswered' => 1]))->json();
+
+        $this->assertCount(1, $response);
     }
 }

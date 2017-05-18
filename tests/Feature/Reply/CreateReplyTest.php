@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ParticipateInForumTest extends TestCase
+class CreateReplyTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -24,10 +24,6 @@ class ParticipateInForumTest extends TestCase
             ->post(route('replies.store', $thread), $reply->toArray());
             
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
-
-
-        $this->get(route('threads.show', [$thread->channel, $thread]))
-            ->assertSee($reply->body);
     }
 
     public function testAnUnauthenticatedUserMayNotAddReply()
