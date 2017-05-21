@@ -40,9 +40,14 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        This thread was published {{ $thread->created_at->diffForHumans() }}
-                        by <a href="#">{{ $thread->owner->name }}</a>,
-                        and currently has <span v-text="pluralCount"></span>
+                        <p>
+                            This thread was published {{ $thread->created_at->diffForHumans() }}
+                            by <a href="#">{{ $thread->owner->name }}</a>,
+                            and currently has <span v-text="pluralCount"></span>
+                        </p>
+                        <p>
+                            <subscribe :thread="{{ $thread }}"></subscribe>
+                        </p>
                     </div>
                 </div>
             </div>

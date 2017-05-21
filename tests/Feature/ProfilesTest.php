@@ -26,7 +26,11 @@ class ProfilesTest extends TestCase
 
         $thread = create_testing(Thread::class, ['user_id' => $user->id]);
 
-        $this->assertDatabaseHas('threads', $thread->toArray());
+        $this->assertDatabaseHas('threads', [
+            'user_id' => $thread->user_id,
+            'channel_id' => $thread->channel_id
+        ]);
+        
         $this->get("/profiles/{$user->name}")
             ->assertSee($thread->title)
             ->assertSee($thread->body);

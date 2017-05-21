@@ -3,13 +3,16 @@
 namespace App;
 
 use App\Traits\RecordsActivity;
+use App\Traits\Subscribable;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, Subscribable;
 
     protected $guarded = [];
+
+    protected $appends = ['subscriptionsCount', 'isSubscribed'];
 
     protected $with = ['owner', 'channel'];
 
