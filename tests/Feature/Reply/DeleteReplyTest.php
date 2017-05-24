@@ -28,7 +28,7 @@ class DeleteReplyTest extends TestCase
 
         $this->delete(route('replies.destroy', $reply));
 
-        $this->assertDatabaseMissing('replies', $reply->toArray());
+        $this->assertDatabaseMissing('replies', $reply->getAttributes());
         $this->assertDatabaseMissing('favorites', $favorite->toArray());
     }
 

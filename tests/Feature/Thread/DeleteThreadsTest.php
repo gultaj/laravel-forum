@@ -19,9 +19,9 @@ class DeleteThreadsTest extends TestCase
 
         $this->json('DELETE', route('threads.destroy', $thread))
             ->assertStatus(204);
-   
+//    dd($reply->getAttributes());
         $this->assertDatabaseMissing('threads', $thread->toArray());
-        $this->assertDatabaseMissing('replies', $reply->toArray());
+        $this->assertDatabaseMissing('replies', $reply->getAttributes());
         
         $this->assertDatabaseMissing('activities', [
             'subject_id' => $thread->id,

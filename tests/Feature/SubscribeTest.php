@@ -24,6 +24,6 @@ class SubscribeTest extends TestCase
             'user_id' => \auth()->id(),
         ]);
 
-        // $this->assertCount(1, \auth()->user()->notifications);
+        $this->assertCount(1, \auth()->user()->notifications);
     }
 }

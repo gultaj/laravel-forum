@@ -2,8 +2,9 @@
 
 namespace App;
 
-use \App\Traits\Favoritable;
+use App\Traits\Favoritable;
 use App\Traits\RecordsActivity;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
@@ -15,6 +16,19 @@ class Reply extends Model
     protected $appends = ['favoritesCount', 'isFavorited', 'canChange'];
 
     protected $with = ['owner', 'favorites'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function($reply) {
+            // if ($reply->thread->subscriptions->count())
+            $reply->thread->subscriptions->each(function($subscription) {
+                // dd($subscription->user);
+                $subscription->user->notify(new ThreadWasUpdated($this->thread, $this));
+            });
+        });
+    }
 
     public function owner()
     {
