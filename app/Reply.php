@@ -22,10 +22,10 @@ class Reply extends Model
         parent::boot();
 
         static::created(function($reply) {
-            // if ($reply->thread->subscriptions->count())
-            $reply->thread->subscriptions->each(function($subscription) {
-                // dd($subscription->user);
-                $subscription->user->notify(new ThreadWasUpdated($this->thread, $this));
+            $reply->thread->subscriptions->each(function($subscription) use ($reply) {
+                if ($subscription->user_id != $reply->user_id) {
+                    $subscription->user->notify(new ThreadWasUpdated($reply));
+                }
             });
         });
     }

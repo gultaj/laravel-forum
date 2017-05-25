@@ -24,6 +24,5 @@ Route::resource('/threads', 'ThreadsController', ['except' => ['show', 'index']]
 Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads.index');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 
-
-
 Route::get('/profiles/{user}', 'UsersController@show')->name('users.show');
+Route::delete('/profiles/{user}/notifications', 'NotificationsController@destroy')->name('users.notifications');
