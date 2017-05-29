@@ -13,7 +13,7 @@ class ThreadWasUpdated extends Notification
 {
     use Queueable;
 
-    protected $reply;
+    protected $reply, $thread;
 
     /**
      * Create a new notification instance.
@@ -23,6 +23,7 @@ class ThreadWasUpdated extends Notification
     public function __construct(Reply $reply)
     {
         $this->reply = $reply;
+        $this->thread = $reply->thread;
     }
 
     /**
@@ -45,7 +46,8 @@ class ThreadWasUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Placeholder'
+            'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
+            'link' => \URL::route('threads.show', [$this->thread->channel, $this->thread], false),
         ];
     }
 }

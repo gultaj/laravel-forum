@@ -15,11 +15,11 @@ class ReadReplyTest extends TestCase
     {
         $this->signIn();
         $thread = create_testing(Thread::class);
-        $replies = \create_testing(Reply::class, ['thread_id' => $thread->id], 3);
+        $replies = \create_testing(Reply::class, ['thread_id' => $thread->id], $thread_count = 30);
 
         $response = $this->getJson(\route('replies.index', $thread))->json();
         // dd($response);
-        $this->assertCount(1, $response['data']);
-        $this->assertEquals(3, $response['total']);
+        $this->assertCount($response['per_page'], $response['data']);
+        $this->assertEquals($thread_count, $response['total']);
     }
 }

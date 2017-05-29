@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use \Illuminate\Notifications\DatabaseNotification;
 
 class NotificationsController extends Controller
 {
@@ -12,8 +13,13 @@ class NotificationsController extends Controller
         $this->middleware('auth');
     }
 
-    public function destroy(User $user)
+    public function index(User $user)
     {
-        $user->notifications->each->markAsRead();
+        return $user->unreadNotifications;
+    }
+
+    public function destroy(User $user, $notification_id)
+    {
+        $user->notifications()->findOrFail($notification_id)->markAsRead();
     }
 }

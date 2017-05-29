@@ -25,4 +25,5 @@ Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads.inde
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 
 Route::get('/profiles/{user}', 'UsersController@show')->name('users.show');
-Route::delete('/profiles/{user}/notifications', 'NotificationsController@destroy')->name('users.notifications');
+Route::get('/profiles/{user}/notifications', 'NotificationsController@index')->name('users.notifications');
+Route::delete('/profiles/{user}/notifications/{notification}', 'NotificationsController@destroy')->name('users.notifications.destroy');

@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'thread' => Thread::class,
             'reply' => Reply::class,
-            'favorite' => \App\Favorite::class
+            'favorite' => \App\Favorite::class,
+            'user' => \App\User::class,
         ]);
     }
 
