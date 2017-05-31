@@ -28,6 +28,8 @@ class RepliesController extends Controller
             'user_id' => $request->user()->id
         ]);
 
+        event(new \App\Events\ThreadHasNewReply($reply));
+
         if (\request()->ajax()) {
             return $reply->fresh();
         }

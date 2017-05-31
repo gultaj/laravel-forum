@@ -50,6 +50,7 @@
                         this.sending = false;          
                     })
                     .catch(error => {
+
                         this.errors = error.response.data.body;
                         this.sending = false;
                     });

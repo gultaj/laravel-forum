@@ -26,7 +26,10 @@ class NotificationsTest extends TestCase
 
         $this->assertCount(0, \auth()->user()->notifications);
 
-        $reply = \create_testing(\App\Reply::class, ['thread_id' => $this->thread->id]);
+        $reply = \make(\App\Reply::class);
+
+        // $this->post(route('replies.store', $this->thread), ['body' => $reply->body]);
+        $notification = create(DatabaseNotification::class);
 
         $this->assertCount(1, \auth()->user()->fresh()->notifications);
     }
