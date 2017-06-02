@@ -6,7 +6,7 @@
 
         <ul class="dropdown-menu" role="menu">
             <li v-for="item in items" key="item.id">
-                <a :href="item.data.link" @click="read(item.id)">{{ item.data.message }}</a>
+                <a :href="item.link" @click="read(item.id)">{{ item.message }}</a>
             </li>
         </ul>
     </li>
@@ -19,7 +19,15 @@
                 items: []
             };
         },
+        beforeMount() {
+            Echo.channel('user.notification').listen('.UserMessage', (e) => {
+                 console.log(e.link);
+                 this.items.push(e);
+                // events.$emit('post-liked', e.post);
+            });
+        },
         created() {
+             
             axios.get(`/profiles/${window.App.user.name}/notifications`)
                 .then(res => {
                     this.items = res.data;

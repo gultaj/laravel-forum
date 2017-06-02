@@ -21,6 +21,8 @@
             'user' => auth()->user(),
         ]) !!};
     </script>
+    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
 </head>
 <body>
     <div id="app">
@@ -116,5 +118,6 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
+    
 </body>
 </html>
