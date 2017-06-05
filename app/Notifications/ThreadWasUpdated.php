@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class ThreadWasUpdated extends Notification
 {
@@ -34,7 +35,7 @@ class ThreadWasUpdated extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -44,6 +45,22 @@ class ThreadWasUpdated extends Notification
      * @return array
      */
     public function toArray($notifiable)
+    {
+        return $this->getNotification();
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage($this->getNotification());
+    }
+
+    private function getNotification()
     {
         return [
             'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,

@@ -28,7 +28,7 @@ services:
         image: mysql:5.7
         environment:
             - "MYSQL_ROOT_PASSWORD=secret"
-            - "MYSQL_DATABASE=dockerApp"
+            - "MYSQL_DATABASE=laravel_forum"
         ports:
             - "33061:3306"
     cache:

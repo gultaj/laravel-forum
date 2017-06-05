@@ -6,7 +6,7 @@
 
         <ul class="dropdown-menu" role="menu">
             <li v-for="item in items" key="item.id">
-                <a :href="item.link" @click="read(item.id)">{{ item.message }}</a>
+                <a :href="item.data.link" @click="read(item.id)">{{ item.data.message }}</a>
             </li>
         </ul>
     </li>
@@ -20,11 +20,13 @@
             };
         },
         beforeMount() {
-            Echo.channel('user.notification').listen('.UserMessage', (e) => {
-                 console.log(e.link);
-                 this.items.push(e);
-                // events.$emit('post-liked', e.post);
-            });
+            Echo.private('App.User.' + window.App.user.id)
+                .notification((notification) => {
+                    this.items.push({
+                        id: notification.id,
+                        data: notification
+                    });
+                });
         },
         created() {
              
