@@ -21,12 +21,9 @@ class Reply extends Model
     {
         parent::boot();
 
-        // static::created(function($reply) {
-        //     // $reply->thread->subscriptions->where('user_id', '!=', $reply->user_id)
-        //     //     ->each(function($subscription) use ($reply) {
-        //     //         $subscription->user->notify(new ThreadWasUpdated($reply));
-        //     //     });
-        // });
+        static::created(function($reply) {
+            $reply->thread->touch();
+        });
     }
 
     public function owner()

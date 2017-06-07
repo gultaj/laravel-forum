@@ -54,4 +54,14 @@ class Thread extends Model
                 $subscription->user->notify(new ThreadWasUpdated($reply));
             });
     }
+
+    public function getCacheVisitKeyAttribute()
+    {
+        return sprintf("users.%s.visits.%s", auth()->id(), $this->id);
+    }
+
+    public function hasUpdateForUser()
+    {
+        return $this->updated_at > \cache($this->cacheVisitKey);
+    }
 }

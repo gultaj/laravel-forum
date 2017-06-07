@@ -13,7 +13,13 @@
                         <div class="panel-heading">
                             <div class="level">
                                 <h4 class="flex">
-                                    <a href="{{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->title }}</a>
+                                    <a href="{{ route('threads.show', [$thread->channel, $thread]) }}">
+                                        @if ($thread->hasUpdateForUser())
+                                            <strong>{{ $thread->title }}</strong>
+                                        @else
+                                            {{ $thread->title }}
+                                        @endif
+                                    </a>
                                 </h4>
 
                                 <strong>{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>
