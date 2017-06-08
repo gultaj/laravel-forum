@@ -23,6 +23,11 @@ class RepliesController extends Controller
         $this->validate($request, [
             'body' => 'required'
         ]);
+
+        if (\str_contains(\request()->body, 'Microsoft')) {
+            throw new \Exception('Your reply contains spam');
+        }
+
         $reply = $thread->replies()->create([
             'body' => $request->body,
             'user_id' => $request->user()->id

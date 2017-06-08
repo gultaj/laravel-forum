@@ -39,6 +39,17 @@ class CreateReplyTest extends TestCase
             ->assertSessionHasErrors('body');
     }
 
+    public function testCannottCreateReplyWithSpam()
+    {
+        $thread = create_testing(Thread::class);
+        $reply = make_testing(Reply::class, ['body' => 'Microsoft']);
+
+        $this->expectException(\Exception::class);
+
+        $this->signIn()
+            ->post(route('replies.store', $thread), $reply->toArray());
+    }
+
     private function _publishReply($overrides = [])
     {
         $thread = create_testing(Thread::class);
