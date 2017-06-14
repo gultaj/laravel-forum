@@ -7,6 +7,18 @@ Route::get('/', function () {
 Auth::routes();
 // Broadcast::routes();
 
+Route::get('/search', function() {
+    $s = 'qui';
+    $threads = App\Reply::search($s)->get();
+//     $client = Elasticsearch\ClientBuilder::create()
+//   ->setHosts(['elasticsearch'])
+// //   ->setRetries(100)
+//   ->setConnectionPool('\Elasticsearch\ConnectionPool\SimpleConnectionPool', [])
+//   ->build();
+
+    return $threads;
+});
+
 Route::get('/home', 'HomeController@index');
 
 Route::post('/threads/{thread}/subscriptions', 'SubscribesController@storeThread')->name('threads.subscribe');

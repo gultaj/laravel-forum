@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
 use App\Traits\RecordsActivity;
 use App\Traits\Subscribable;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use \App\Notifications\ThreadWasUpdated;
 
 class Thread extends Model
 {
-    use RecordsActivity, Subscribable;
+    use Searchable, RecordsActivity, Subscribable;
 
     protected $guarded = [];
 

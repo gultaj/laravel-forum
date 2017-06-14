@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $users->push(factory(App\User::class)->create(['name' => 'gultaj', 'email' => '1@tut.by']));
 
         $threads->each(function($thread) use ($users, $channels) {
-            $thread->replies()->saveMany($replies = factory(App\Reply::class, mt_rand(0, 5))->create());
+            $thread->replies()->saveMany($replies = factory(App\Reply::class, mt_rand(0, 5))->make());
             $replies->each(function($reply) use ($users) {
                 $reply->owner()->associate($users->random());
                 $reply->save();

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
 use App\Traits\Favoritable;
 use App\Traits\RecordsActivity;
 use App\Notifications\ThreadWasUpdated;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use Favoritable, RecordsActivity;
+    use Favoritable, RecordsActivity, Searchable;
 
     protected $guarded = []; 
 
@@ -22,7 +23,7 @@ class Reply extends Model
         parent::boot();
 
         static::created(function($reply) {
-            $reply->thread->touch();
+            // $reply->thread->touch();
         });
     }
 

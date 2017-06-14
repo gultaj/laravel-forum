@@ -32,6 +32,11 @@ services:
         ports:
             - "33061:3306"
     cache:
-        image: redis:3.0
+        image: redis
         ports:
             - "63791:6379"
+    elasticsearch:
+        image: elasticsearch
+        ports:
+            - "9200:9200"
+            - 9300:9300
