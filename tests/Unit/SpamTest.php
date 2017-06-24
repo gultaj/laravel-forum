@@ -2,19 +2,31 @@
 
 namespace Tests\Unit;
 
+use App\Inspections\Spam;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SpamTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    use DatabaseMigrations;
+
+    public function testItChecksForInvalidKeywords()
     {
-        $this->assertTrue(true);
+        $spam = new Spam();
+
+        $this->assertFalse($spam->detect('Innocent reply here'));
+
+        $this->expectException(\Exception::class);
+
+        $spam->detect('microsoft');
+    }
+
+    public function testItChecksForAnyKeyBeingHeldDown()
+    {
+        $spam = new Spam();
+
+        $this->expectException(\Exception::class);
+
+        $spam->detect('Hello world aaaaaaaaaaaa');
     }
 }

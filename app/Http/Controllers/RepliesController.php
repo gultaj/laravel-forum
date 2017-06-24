@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
-use App\Reply;
+use App\{Thread, Reply, Inspections\Spam};
 use Illuminate\Http\Request;
 
 class RepliesController extends Controller
@@ -18,20 +17,22 @@ class RepliesController extends Controller
         return $thread->replies()->paginate(25);
     }
 
-    public function store(Request $request, Thread $thread)
+    public function store(Request $request, Thread $thread, Spam $spam)
     {
-        $this->validate($request, [
-            'body' => 'required'
-        ]);
+        try {
+            $this->validate($request, [
+                'body' => 'required'
+            ]);
 
-        if (\str_contains(\request()->body, 'Microsoft')) {
-            throw new \Exception('Your reply contains spam');
+            $spam->detect($request->body);
+
+            $reply = $thread->replies()->create([
+                'body' => $request->body,
+                'user_id' => $request->user()->id
+            ]);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 422);
         }
-
-        $reply = $thread->replies()->create([
-            'body' => $request->body,
-            'user_id' => $request->user()->id
-        ]);
 
         event(new \App\Events\ThreadHasNewReply($reply));
 

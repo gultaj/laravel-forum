@@ -7,7 +7,7 @@
                 v-model="body" required>
             </textarea>
             <div v-show="hasError">
-                <span class="help-block" v-for="error in errors">{{ error }}</span>
+                <span class="help-block" v-for="(error, i) in errors" :key="i">{{ error }}</span>
             </div>
             <br>
             <button type="submit" class="btn btn-default" @click.prevent="addReply" :disabled="sending">
@@ -44,16 +44,15 @@
                 this.sending = true;
                 this.errors = [];
                 axios.post(`/threads/${this.threadId}/replies`, {body: this.body})
+                    .catch(error => {
+                        this.errors.push(error.response.data);
+                        flash(error.response.data, 'danger');
+                    })
                     .then(res => {
                         this.body = '';
-                        this.$emit('created', res.data);
-                        this.sending = false;          
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.errors = error.response.data.body;
-                        this.sending = false;
+                        this.$emit('created', res.data);       
                     });
+                this.sending = false;
             }
         }
     }

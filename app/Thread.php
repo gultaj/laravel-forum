@@ -10,7 +10,7 @@ use \App\Notifications\ThreadWasUpdated;
 
 class Thread extends Model
 {
-    use Searchable, RecordsActivity, Subscribable;
+    use RecordsActivity, Subscribable;
 
     protected $guarded = [];
 

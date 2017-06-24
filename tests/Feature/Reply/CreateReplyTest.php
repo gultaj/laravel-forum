@@ -39,7 +39,7 @@ class CreateReplyTest extends TestCase
             ->assertSessionHasErrors('body');
     }
 
-    public function testCannottCreateReplyWithSpam()
+    public function testCannotCreateReplyWithSpam()
     {
         $thread = create_testing(Thread::class);
         $reply = make_testing(Reply::class, ['body' => 'Microsoft']);

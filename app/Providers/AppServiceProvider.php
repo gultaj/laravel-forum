@@ -42,5 +42,10 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
         }
+        if (!is_null(env('SCOUT_DRIVER'))) {
+            dd(1);
+            $this->app->register(\Laravel\Scout\ScoutServiceProvider::class);
+            $this->app->register(\ScoutEngines\Elasticsearch\ElasticsearchProvider::class);
+        }
     }
 }

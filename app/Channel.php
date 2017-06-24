@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
-    use Searchable;
     
     public function threads()
     {

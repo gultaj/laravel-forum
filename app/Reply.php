@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use Favoritable, RecordsActivity, Searchable;
+    use Favoritable, RecordsActivity;
 
     protected $guarded = []; 
 
