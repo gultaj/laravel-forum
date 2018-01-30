@@ -1,5 +1,6 @@
 <?php
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,8 +19,12 @@ Route::get('/search', function() {
 
     return $threads;
 });
+Route::get('/cache/flush', function() {
+    \Cache::flush();
+    return redirect()->route('home');
+});
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/threads/{thread}/subscriptions', 'SubscribesController@storeThread')->name('threads.subscribe');
 Route::delete('/threads/{thread}/subscriptions', 'SubscribesController@destroyThread')->name('threads.unsubscribe');
