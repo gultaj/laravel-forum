@@ -14,7 +14,7 @@ class Thread extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['subscriptionsCount', 'isSubscribed', 'replyCount'];
+    protected $appends = ['subscriptionsCount', 'isSubscribed'];
 
     protected $with = ['owner', 'channel'];
 

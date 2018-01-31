@@ -90,8 +90,8 @@ class ThreadsController extends Controller
     {
          $thread->load('replies.owner', 'replies.favorites');
 
-        //\cache()->forever($thread->cacheVisitKey, \Carbon\Carbon::now());
-        dd($thread->toArray());
+        \cache()->forever($thread->cacheVisitKey, \Carbon\Carbon::now());
+        // dd($thread);
         return view('threads.show', [
             'thread' => $thread,
             'channel' => $channel,
