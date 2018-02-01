@@ -19,20 +19,14 @@ class RepliesController extends Controller
 
     public function store(Request $request, Thread $thread, Spam $spam)
     {
-        try {
-            $this->validate($request, [
-                'body' => 'required'
-            ]);
+        $this->validate($request, ['body' => 'required']);
 
-            $spam->detect($request->body);
+        $spam->detect($request->body);
 
-            $reply = $thread->replies()->create([
-                'body' => $request->body,
-                'user_id' => $request->user()->id
-            ]);
-        } catch (\Exception $e) {
-            return response($e->getMessage(), 422);
-        }
+        $reply = $thread->replies()->create([
+            'body' => $request->body,
+            'user_id' => $request->user()->id
+        ]);
 
         event(new \App\Events\ThreadHasNewReply($reply));
 

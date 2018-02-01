@@ -13,8 +13,8 @@ class ProfilesTest extends TestCase
 
     public function testAUserHasAProfile()
     {
-        $this->signIn();
         $user = create(User::class);
+        $this->signIn($user);
 
         $this->get("/profiles/{$user->name}")
             ->assertSee($user->name);

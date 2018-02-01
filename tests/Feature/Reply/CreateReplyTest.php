@@ -46,8 +46,7 @@ class CreateReplyTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        $this->signIn()
-            ->post(route('replies.store', $thread), $reply->toArray());
+        $this->signIn()->post(route('replies.store', $thread), $reply->toArray());
     }
 
     private function _publishReply($overrides = [])

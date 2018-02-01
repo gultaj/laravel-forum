@@ -20,6 +20,6 @@ class ThreadFilters extends Filters
 
     protected function unanswered()
     {
-        return $this->builder->having('replies_count', 0);
+        return $this->builder->groupBy('threads.id')->having('replies_count', 0);
     }
 }
