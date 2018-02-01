@@ -57,9 +57,11 @@ class RepliesController extends Controller
         return back()->with('flash', 'Reply deleted');
     }
 
-    public function update(Reply $reply)
+    public function update(Reply $reply, Spam $spam)
     {
         $this->authorize('change', $reply);
+        $this->validate(request(), ['body' => 'required']);
+        $spam->detect(request('body'));
         $reply->update(request(['body']));
     }
 }
