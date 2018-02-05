@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Thread, Reply, Inspections\Spam};
+use App\{Thread, Reply};
 use Illuminate\Http\Request;
 
 class RepliesController extends Controller
@@ -17,24 +17,23 @@ class RepliesController extends Controller
         return $thread->replies()->paginate(25);
     }
 
-    public function store(Request $request, Thread $thread, Spam $spam)
+    public function store(Request $request, Thread $thread)
     {
-        $this->validate($request, ['body' => 'required']);
+        try{
+            $this->authorize('create', new Reply);
+            $this->validate($request, ['body' => 'required|spamfree']);
 
-        $spam->detect($request->body);
-
-        $reply = $thread->replies()->create([
-            'body' => $request->body,
-            'user_id' => $request->user()->id
-        ]);
+            $reply = $thread->replies()->create([
+                'body' => $request->body,
+                'user_id' => $request->user()->id
+            ]);
+        } catch (\Exception $e) {
+            return response('ttt', 422);
+        }
 
         event(new \App\Events\ThreadHasNewReply($reply));
 
-        if (\request()->ajax()) {
-            return $reply->fresh();
-        }
-
-        return back()->with('flash', 'Reply created');
+        return $reply->fresh()->load('owner');
     }
 
     /**
@@ -57,11 +56,10 @@ class RepliesController extends Controller
         return back()->with('flash', 'Reply deleted');
     }
 
-    public function update(Reply $reply, Spam $spam)
+    public function update(Reply $reply)
     {
         $this->authorize('change', $reply);
-        $this->validate(request(), ['body' => 'required']);
-        $spam->detect(request('body'));
+        $this->validate(request(), ['body' => 'required|spamfree']);
         $reply->update(request(['body']));
     }
 }

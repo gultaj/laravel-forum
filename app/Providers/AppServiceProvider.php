@@ -30,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
             'favorite' => \App\Favorite::class,
             'user' => \App\User::class,
         ]);
+
+        \Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
 
     /**

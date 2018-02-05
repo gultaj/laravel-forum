@@ -97,6 +97,8 @@ return [
     |
     */
 
+    'spamfree' => 'The :attribute have spam',
+
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

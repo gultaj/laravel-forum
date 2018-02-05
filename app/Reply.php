@@ -7,6 +7,7 @@ use App\Traits\Favoritable;
 use App\Traits\RecordsActivity;
 use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Reply extends Model
 {
@@ -35,6 +36,11 @@ class Reply extends Model
     public function thread()
     {
         return $this->belongsTo(Thread::class);
+    }
+
+    public function justWasPublished()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
     }
 
     public function getCanChangeAttribute()

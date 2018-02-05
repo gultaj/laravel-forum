@@ -44,9 +44,22 @@ class CreateReplyTest extends TestCase
         $thread = create_testing(Thread::class);
         $reply = make_testing(Reply::class, ['body' => 'Microsoft']);
 
-        $this->expectException(\Exception::class);
+        $this->signIn();
+        $this->post(route('replies.store', $thread), $reply->toArray())
+            ->assertStatus(422);
+    }
 
-        $this->signIn()->post(route('replies.store', $thread), $reply->toArray());
+    public function testUserMayPostReplyOnePerMinute()
+    {
+        $thread = create_testing(Thread::class);
+        $reply = make_testing(Reply::class);
+
+        $this->signIn()
+            ->post(route('replies.store', $thread), $reply->toArray())
+            ->assertStatus(200);
+
+        $this->post(route('replies.store', $thread), $reply->toArray())
+            ->assertStatus(422);
     }
 
     private function _publishReply($overrides = [])

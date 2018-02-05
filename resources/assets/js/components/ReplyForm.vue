@@ -45,8 +45,8 @@
                 this.errors = [];
                 axios.post(`/threads/${this.threadId}/replies`, {body: this.body})
                     .catch(error => {
-                        this.errors.push(error.response.data);
-                        flash(error.response.data, 'danger');
+                        this.errors = error.response.data.body;
+                        flash(error.response.data.body[0], 'danger');
                     })
                     .then(res => {
                         this.body = '';

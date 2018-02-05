@@ -56,17 +56,15 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Spam $spam)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'title' => 'required',
-            'body' => 'required',
+            'body' => 'required|spamfree',
             'channel_id' => 'required|exists:channels,id'
         ],[
             'channel_id.*' => 'The selected Channel name is invalid.'
         ]);
-
-        $spam->detect($request->body);
 
         Thread::create([
             'title' => $request->title,
@@ -92,7 +90,7 @@ class ThreadsController extends Controller
          $thread->load('replies.owner', 'replies.favorites');
 
         \cache()->forever($thread->cacheVisitKey, \Carbon\Carbon::now());
-        // dd($thread);
+
         return view('threads.show', [
             'thread' => $thread,
             'channel' => $channel,
