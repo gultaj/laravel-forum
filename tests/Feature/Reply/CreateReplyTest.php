@@ -41,12 +41,8 @@ class CreateReplyTest extends TestCase
 
     public function testCannotCreateReplyWithSpam()
     {
-        $thread = create_testing(Thread::class);
-        $reply = make_testing(Reply::class, ['body' => 'Microsoft']);
-
-        $this->signIn();
-        $this->post(route('replies.store', $thread), $reply->toArray())
-            ->assertStatus(422);
+         $this->_publishReply(['body' => 'Microsoft'])
+            ->assertSessionHasErrors('body');
     }
 
     public function testUserMayPostReplyOnePerMinute()

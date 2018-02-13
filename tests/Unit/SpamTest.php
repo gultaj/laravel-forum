@@ -16,17 +16,15 @@ class SpamTest extends TestCase
 
         $this->assertFalse($spam->detect('Innocent reply here'));
 
-        $this->expectException(\Exception::class);
-
-        $spam->detect('microsoft');
+        $this->assertTrue($spam->detect('microsoft'));
     }
 
     public function testItChecksForAnyKeyBeingHeldDown()
     {
         $spam = new Spam();
 
-        $this->expectException(\Exception::class);
+        $this->assertFalse($spam->detect('Hello world'));
 
-        $spam->detect('Hello world aaaaaaaaaaaa');
+        $this->assertTrue($spam->detect('Hello world aaaaaaaaaaaa'));
     }
 }

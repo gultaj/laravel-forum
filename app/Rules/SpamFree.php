@@ -9,11 +9,7 @@ class SpamFree
 {
     public function passes($attribute, $value)
     {
-        try{
-            return ! resolve(Spam::class)->detect($value);
-        } catch(Exception $e) {
-            return false;
-        }
+        return !resolve(Spam::class)->detect($value);
     }
 
     public function message()

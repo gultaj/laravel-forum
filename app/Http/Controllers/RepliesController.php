@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\{Thread, Reply};
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateReplyRequest;
 
 class RepliesController extends Controller
 {
@@ -17,23 +18,20 @@ class RepliesController extends Controller
         return $thread->replies()->paginate(25);
     }
 
-    public function store(Request $request, Thread $thread)
+    public function store(CreateReplyRequest $request, Thread $thread)
     {
         try{
             $this->authorize('create', new Reply);
-            $this->validate($request, ['body' => 'required|spamfree']);
-
-            $reply = $thread->replies()->create([
-                'body' => $request->body,
-                'user_id' => $request->user()->id
-            ]);
         } catch (\Exception $e) {
-            return response('ttt', 422);
+            return response(['body'=> ['ttt']], 422);
         }
-
+        $reply = $thread->replies()->create([
+            'body' => $request->body,
+            'user_id' => $request->user()->id
+        ]);
         event(new \App\Events\ThreadHasNewReply($reply));
 
-        return $reply->fresh()->load('owner');
+        return $reply->load('owner');
     }
 
     /**
