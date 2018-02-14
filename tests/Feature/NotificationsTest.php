@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use \Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\User;
+use App\Reply;
 
 class NotificationsTest extends TestCase
 {
@@ -64,5 +66,16 @@ class NotificationsTest extends TestCase
         // dd($response);
         $this->assertCount($notifications_count, $response);
 
+    }
+
+    public function testMentionedUserInAReplyAreNotified()
+    {
+        $user = create(User::class);
+
+        $reply = make_testing(Reply::class, ['body' => "@{$user->name} look at this"]);
+
+        $this->json('post', route('replies.store', $this->thread), $reply->toArray());
+
+        $this->assertCount(1, $user->notifications);
     }
 }

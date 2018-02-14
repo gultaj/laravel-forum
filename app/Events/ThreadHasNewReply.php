@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Reply;
 
 class ThreadHasNewReply
 {
@@ -19,7 +20,7 @@ class ThreadHasNewReply
      *
      * @return void
      */
-    public function __construct($reply)
+    public function __construct(Reply $reply)
     {
         $this->thread = $reply->thread;
         $this->reply = $reply;

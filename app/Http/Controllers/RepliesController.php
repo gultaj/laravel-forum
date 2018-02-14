@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\{Thread, Reply};
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateReplyRequest;
+use App\Events\ThreadHasNewReply;
 
 class RepliesController extends Controller
 {
@@ -24,7 +25,7 @@ class RepliesController extends Controller
             'body' => $request->body,
             'user_id' => $request->user()->id
         ]);
-        event(new \App\Events\ThreadHasNewReply($reply));
+        event(new ThreadHasNewReply($reply));
 
         return $reply->load('owner');
     }

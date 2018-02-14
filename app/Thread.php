@@ -7,6 +7,7 @@ use App\Traits\RecordsActivity;
 use App\Traits\Subscribable;
 use Illuminate\Database\Eloquent\Model;
 use \App\Notifications\ThreadWasUpdated;
+use App\Notifications\UserWereMentioned;
 
 class Thread extends Model
 {
@@ -46,14 +47,6 @@ class Thread extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
-    }
-
-    public function notifySubscribers(Reply $reply)
-    {
-        $this->subscriptions->where('user_id', '!=', $reply->user_id)
-            ->each(function($subscription) use ($reply) {
-                $subscription->user->notify(new ThreadWasUpdated($reply));
-            });
     }
 
     public function getCacheVisitKeyAttribute()

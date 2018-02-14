@@ -19,15 +19,6 @@ class Reply extends Model
 
     protected $with = ['owner', 'favorites'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function($reply) {
-            // $reply->thread->touch();
-        });
-    }
-
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -47,5 +38,4 @@ class Reply extends Model
     {
         return auth()->user() and auth()->user()->can('change', $this);
     }
-
 }

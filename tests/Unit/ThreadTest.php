@@ -42,19 +42,4 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf(Channel::class, $thread->channel);
     }
 
-    public function testNotifyAllSubscribersForThread()
-    {
-        Notification::fake();
-
-        $this->signIn();
-
-        $thread = create_testing(Thread::class);
-        $thread->subscribe();
-
-        $reply = \create_testing(\App\Reply::class, ['thread_id' => $thread->id]);
-
-        $thread->notifySubscribers($reply);
-
-        Notification::assertSentTo(\auth()->user(), ThreadWasUpdated::class);
-    }
 }
