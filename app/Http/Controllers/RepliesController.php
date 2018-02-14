@@ -20,11 +20,6 @@ class RepliesController extends Controller
 
     public function store(CreateReplyRequest $request, Thread $thread)
     {
-        try{
-            $this->authorize('create', new Reply);
-        } catch (\Exception $e) {
-            return response(['body'=> ['ttt']], 422);
-        }
         $reply = $thread->replies()->create([
             'body' => $request->body,
             'user_id' => $request->user()->id

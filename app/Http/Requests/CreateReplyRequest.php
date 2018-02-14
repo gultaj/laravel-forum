@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use App\Reply;
+use App\Exceptions\ThrottleException;
 
 class CreateReplyRequest extends FormRequest
 {
@@ -13,7 +16,12 @@ class CreateReplyRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create', new Reply);
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new ThrottleException('You are replying too frequently');
     }
 
     /**

@@ -47,6 +47,7 @@ class CreateReplyTest extends TestCase
 
     public function testUserMayPostReplyOnePerMinute()
     {
+        $this->withExceptionHandling();
         $thread = create_testing(Thread::class);
         $reply = make_testing(Reply::class);
 
@@ -55,7 +56,7 @@ class CreateReplyTest extends TestCase
             ->assertStatus(200);
 
         $this->post(route('replies.store', $thread), $reply->toArray())
-            ->assertStatus(422);
+            ->assertStatus(429);
     }
 
     private function _publishReply($overrides = [])
