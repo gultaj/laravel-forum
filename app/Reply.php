@@ -38,4 +38,9 @@ class Reply extends Model
     {
         return auth()->user() and auth()->user()->can('change', $this);
     }
+
+    public function setBodyAttribute($body)
+    {
+        $this->attributes['body'] = preg_replace('/@([\w.]+)(?=\b.)/', '<a href="/profiles/$1">$0</a>', $body);
+    }
 }

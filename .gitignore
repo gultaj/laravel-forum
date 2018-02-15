@@ -9,3 +9,7 @@ Homestead.yaml
 .env
 *.log*
 .vagrant/
+public/js
+public/css
+public/fonts
+public/mix-manifest.json

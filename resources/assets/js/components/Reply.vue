@@ -29,7 +29,7 @@
             </form>
         </div>
         <div v-else>
-            <div class="body" v-text="body"></div>
+            <div class="body" v-html="body"></div>
         </div>
         <hr>
     </article>
