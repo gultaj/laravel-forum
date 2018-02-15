@@ -17,7 +17,7 @@ class Thread extends Model
 
     protected $appends = ['subscriptionsCount', 'isSubscribed'];
 
-    protected $with = ['owner', 'channel'];
+    protected $with = ['owner'];
 
 
     protected static function boot()

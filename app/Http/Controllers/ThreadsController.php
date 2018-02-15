@@ -35,7 +35,7 @@ class ThreadsController extends Controller
         }
 
         return view('threads.index', [
-            'threads' => $threads,
+            'threads' => $threads->load('channel'),
             'channel' => $channel,
         ]);
     }
@@ -87,14 +87,11 @@ class ThreadsController extends Controller
      */
     public function show(Channel $channel, Thread $thread)
     {
-         $thread->load('replies.owner', 'replies.favorites');
-
         \cache()->forever($thread->cacheVisitKey, \Carbon\Carbon::now());
 
         return view('threads.show', [
             'thread' => $thread,
             'channel' => $channel,
-            'replies' => $thread->replies,
         ]);
     }
 

@@ -19,11 +19,7 @@ class NotifyUserMentioned
     public function handle(ThreadHasNewReply $event)
     {
         preg_match_all('/@([\w.]+)(?=\b.)/', $event->reply->body, $matches);
-        collect($matches[1])
-            ->map(function($name) {
-                return User::whereName($name)->first();
-            })
-            ->filter()
+        User::whereIn('name', $matches[1])->get()
             ->each
             ->notify(new UserWereMentioned($event->reply));
     }

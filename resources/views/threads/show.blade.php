@@ -42,7 +42,7 @@
                     <div class="panel-body">
                         <p>
                             This thread was published {{ $thread->created_at->diffForHumans() }}
-                            by <a href="#">{{ $thread->owner->name }}</a>,
+                            by <a href="{{ route('users.show', $thread->owner) }}">{{ $thread->owner->name }}</a>,
                             and currently has <span v-text="pluralCount"></span>
                         </p>
                         <p>

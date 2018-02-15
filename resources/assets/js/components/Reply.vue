@@ -18,16 +18,18 @@
             </div>
         </section>
         <div v-if="editing">
-            <div class="form-group">
-                <textarea class="form-control" v-model="body"></textarea>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-xs btn-success" @click="update">Update</button>
-                <button type="button" class="btn btn-xs btn-link" @click="editing = false">Cancel</button>
-            </div>
+            <form @submit="update">
+                <div class="form-group">
+                    <textarea class="form-control" v-model="body" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-xs btn-success">Update</button>
+                    <button type="button" class="btn btn-xs btn-link" @click="cancel">Cancel</button>
+                </div>
+            </form>
         </div>
         <div v-else>
-            <div class="body">{{ body }}</div>
+            <div class="body" v-text="body"></div>
         </div>
         <hr>
     </article>
@@ -64,7 +66,12 @@
             destroy() {
                 axios.delete('/replies/' + this.id);
                 this.$emit('deleted', this.id);              
+            },
+            cancel() {
+                this.body = this.data.body;
+                this.editing = false;
             }
+
         }
     }
 </script>
