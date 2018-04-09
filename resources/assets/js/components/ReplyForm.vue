@@ -1,11 +1,13 @@
 <template>
     <div>
         <div :class="classes" v-if="signedIn">
-            <textarea name="body" id="body" 
-                class="form-control" 
-                placeholder="Have something to say?..." 
-                v-model="body" required>
-            </textarea>
+            <at-ta v-model="body" :members="members" name-key="name">
+                <textarea name="body" id="body" 
+                    class="form-control" 
+                    placeholder="Have something to say?..." 
+                    required>
+                </textarea>
+            </at-ta>
             <div v-show="hasError">
                 <span class="help-block" v-for="(error, i) in errors" :key="i">{{ error }}</span>
             </div>
@@ -19,11 +21,16 @@
 </template>
 
 <script>
+    import AtTa from 'vue-at/dist/vue-at-textarea';
+
     export default {
-        props: ['threadId'],
+        components: {
+            AtTa
+        },
+        props: ['threadId', 'members'],
         data () {
             return {
-                body: '',
+                body: null,
                 sending: false,
                 errors: []
             };
@@ -43,13 +50,14 @@
             addReply() {
                 this.sending = true;
                 this.errors = [];
+                //this.body = null;
                 axios.post(`/threads/${this.threadId}/replies`, {body: this.body})
                     .catch(error => {
                         this.errors = error.response.data.body;
                         flash(error.response.data.body[0], 'danger');
                     })
                     .then(res => {
-                        this.body = '';
+                        this.body = null;
                         this.$emit('created', res.data);       
                     });
                 this.sending = false;

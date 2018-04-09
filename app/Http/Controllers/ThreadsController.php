@@ -92,6 +92,7 @@ class ThreadsController extends Controller
         return view('threads.show', [
             'thread' => $thread,
             'channel' => $channel,
+            'members' => User::get(),
         ]);
     }
 

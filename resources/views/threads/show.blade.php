@@ -30,6 +30,7 @@
 
                     <div class="panel-body">
                         <replies :thread-id="{{ $thread->id }}"
+                            :members="{{ $members }}"
                             @removed="repliesCount--" 
                             @added="repliesCount++">
                         </replies>              

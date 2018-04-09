@@ -6,7 +6,9 @@
 
         <paginator :dataSet="dataSet" @update="fetch"></paginator>
 
-        <reply-form @created="add" :thread-id="threadId"></reply-form>
+        <reply-form @created="add" 
+            :thread-id="threadId"
+            :members="members"></reply-form>
     </div>
 </template>
 
@@ -16,7 +18,7 @@
     import Paginator from './Paginator.vue';
 
     export default {
-        props: ['threadId'],
+        props: ['threadId', 'members'],
         components: { Reply, ReplyForm, Paginator },
         data() {
             return {

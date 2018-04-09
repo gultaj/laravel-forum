@@ -12,10 +12,13 @@ require('./bootstrap');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import Flash from './components/Flash.vue';
+import Thread from './pages/Thread.vue';
+import UserNotifications from './components/UserNotifications.vue';
 
-Vue.component('flash', require('./components/Flash.vue'));
-Vue.component('thread-view', require('./pages/Thread.vue'));
-Vue.component('user-notifications', require('./components/UserNotifications.vue'));
+Vue.component('flash', Flash);
+Vue.component('thread-view', Thread);
+Vue.component('user-notifications', UserNotifications);
 
 const app = new Vue({
     el: '#app'
